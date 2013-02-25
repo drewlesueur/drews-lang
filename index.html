@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta name = "viewport" content = "initial-scale = 1.0"> 
+<style>
+  * {font-family: 'gill sans'}
+  p,table {font-size: 20px}
+  .pending { color: gold;}
+  .passed { color: green;}
+  
+  table {border: 1px solid black}
+</style>
+</head>
+
+<body>
+<h1>drews_lang</h1>
+<p>
+Drew's programming language
+</p>
+<h2>example</h2>
+<p>
+
+</p>
+
+
+<script src="poor_modules/poor-module.js"></script>
+
+<script src="poor_modules/script-string.js"></script>
+<script src="drews_express.js"></script>
+<script src="drews_lang.js"></script>
+<script id="drews_lang_test" type="drews_lang">
+say  hello world2
+say  is this thing on?
+
+fn get_27
+  ity 27
+
+get_27
+set stuff
+ity stuff
+</script>
+
+
+<script>
+  window.onerror = function (e) {
+    alert(e)
+    throw e
+    return false
+  }
+var to_json = function (obj) {
+  return JSON.stringify(obj, null, " ")
+}
+var script_string = poorModule("script-string")
+var drews_lang = poor_module("drews_lang");
+
+script_string("drews_lang_test", function (err, code) {
+  var result = drews_lang(code); 
+  console.log("drews_lang result");
+  console.log(result);
+})
+
+</script>
+
