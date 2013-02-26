@@ -1,3 +1,5 @@
+// Possible todo:
+// allow to push and pop the code too.
 poor_module("drews_lang", function () {
   var to_string = Object.prototype.toString
   var is_array = function (a) { return to_string.call(a) == '[object Array]' }
@@ -22,6 +24,12 @@ poor_module("drews_lang", function () {
 
   var call_cmd = function (name, args) {
     commands.push_stack()
+    //doing "i" and "scope" here
+    i_stack.push(i)
+    var old_scope = scope
+     
+    scope = {parent_scope: old_scope}
+    return ret_val
     i = fn_map[name]
     scope.args = args
   }
@@ -87,12 +95,6 @@ poor_module("drews_lang", function () {
       return ret_val;
     },
     "push_stack": function () {
-      //doing "i" and "scope" here
-      i_stack.push(i)
-      var old_scope = scope
-       
-      scope = {parent_scope: old_scope}
-      return ret_val
     },
     "get": function (args) {
       if (args.length == 2) {
