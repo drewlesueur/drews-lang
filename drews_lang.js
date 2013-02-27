@@ -18,14 +18,16 @@ poor_module("drews_lang", function () {
   var i = 0;
   var i_stack = [];
   var scope = {};
-  var scope_stack = {}; //or use scope.parent_scope?
+  var scope_stack = []; //or use scope.parent_scope?
   var global_scope = {}
   var ret_val;
   var arg_val = {};
   var raw_get = function (name) {
     //consider strings not being quoted and variables being quoted, or wrapped
     // consider scope chains?
-    if (name[0] == "'") {
+    if (!name) {
+      return null;
+    } else if (name[0] == "'") {
       return name.substr(1);
     } else {
       return scope[name];
@@ -53,7 +55,7 @@ poor_module("drews_lang", function () {
       return vals[0]
     }, "set_lit": function (args) {
       var name = args[1]
-      scope[name] = args[2]
+      scope[name] = args.slice(2)
     }, "set": function (args) {
       var name = args[1] 
       if (args.length == 3) {
@@ -74,7 +76,7 @@ poor_module("drews_lang", function () {
       return raw_get(name)
     }, "arg": function (args) {
       var arg_val =  raw_get(args[1])
-    }, "return": function () {
+    }, "return": function (args) {
       code = code_stack.pop();
       if (!code) {
         i = 0;
@@ -85,31 +87,33 @@ poor_module("drews_lang", function () {
         i = code.length; //break!
       }
       return ret_val
-    }, "goto": function () {
+    }, "goto": function (args) {
       var new_code = raw_get(args[2]);
       var new_scope = raw_get(args[3])
-      i = args[1]
+      i = parseInt(args[1]) - 1
       if (new_code) { code = new_code }
       if (new_scope) { scope = new_scope }
       return ret_val;
-    }, "call": function () {
-      var new_i = args[1]
+    }, "call": function (args) {
+      var new_i = parseInt(args[1]) - 1
       var new_code = raw_get(args[2]);
       var new_scope = raw_get(args[3])
       i_stack.push(i);
       i = new_i;
-      code_stack.push(code);
-      if (new_code) { code = new_code }
+      if (new_code) {
+        code_stack.push(code);
+        code = new_code 
+      }
       if (new_scope) { scope = new_scope }
       return ret_val
 
     }, "set_scope": function (args) {
       var new_scope = raw_get(args[1])
-    }, "push_scope": function () {
+    }, "push_scope": function (args) {
       scope_stack.push(scope)
       scope = {};
       return ret_val
-    }, "pop_scope": function () {
+    }, "pop_scope": function (args) {
       scope = scope_stack.pop()
       return ret_val;
     }
@@ -122,8 +126,8 @@ poor_module("drews_lang", function () {
     i += 1 //consider using linked lists too??
   }
 
-  var evaluate = function (raw_code, scope) {
-    scope = scope || {}
+  var evaluate = function (raw_code, _scope) {
+    scope = _scope || {}
     if (is_array(raw_code)) {
       code = raw_code
     } else {
@@ -135,6 +139,7 @@ poor_module("drews_lang", function () {
     while (true) {
       if (i >= code.length) {break}
       line = code[i]
+      debugger
       eval_line();
     }
     return ret_val

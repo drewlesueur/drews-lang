@@ -33,6 +33,32 @@ say  'hello world2
 say  'is this thing on?
 set a '100
 say a
+
+set_lit other_code
+  say  'this is some other code
+  return
+
+say other_code
+call 0 other_code
+
+set_lit mountain
+  set climb '20
+  return
+
+set_lit mountain
+  set climb '20
+  return
+
+set climb '30
+call 0 mountain
+say  'with no scope changes
+say climb
+
+set climb '100
+call 0 mountain
+say climb
+say climb
+
 </script>
 
 
