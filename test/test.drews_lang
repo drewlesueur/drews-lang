@@ -1,0 +1,32 @@
+true fn a
+  fn b
+    a
+
+true fn a
+  fn b
+    a
+
+false fn a
+  fn b
+    b
+
+if fn m
+  fn a
+    fn b
+      m a b
+
+zero fn f
+  fn x
+    x
+
+one fn f
+  fn x
+    f x
+
+add1 fn n
+  fn f
+    fn x
+      f
+        n f x
+
+add1 zero
