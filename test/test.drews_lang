@@ -1,6 +1,4 @@
-true fn a
-  fn b
-    a
+true fn (a b) a
 
 true fn a
   fn b
@@ -10,23 +8,33 @@ false fn a
   fn b
     b
 
+false fn (a b) b
+
 if fn m
   fn a
     fn b
       m a b
 
+if fn (m a b) m a b
+
 zero fn f
   fn x
     x
 
+zero fn (f x) x
+
 one fn f
   fn x
     f x
+one fn (f x ) f x
 
 add1 fn n
   fn f
     fn x
       f
         n f x
+
+add1 fn (n f x) f (n f x)
+add1 fn (n f x) (f ((n f) x))
 
 add1 zero
